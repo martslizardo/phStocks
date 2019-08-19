@@ -1,5 +1,6 @@
 from . import app
 import requests
+from . import redis_store
 import json
 
 
@@ -11,6 +12,7 @@ def retrieve_stocks():
     try:
         r = requests.get(HOST + '?method=getSecuritiesAndIndicesForPublic&ajax=true', headers=HEADERS, timeout=5)
         stocks = r.json()
-        return json.dumps(stocks)
+        stocks = json.dumps(stocks[1:])
+        redis_store.set('stocks:all', stocks)
     except requests.exceptions.Timeout as err:
          print(err)    

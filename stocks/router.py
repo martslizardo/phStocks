@@ -1,9 +1,10 @@
 from . import app
-from .ticker import retrieve_stocks
-import sys
+from .stock import Stock
+from .response import Response
+from flask import jsonify
 
-sys.setrecursionlimit(15000)
-stocks = retrieve_stocks()
+
 @app.route('/stocks')
-def retrieve_stocks():
-    return stocks
+def retrieve_all_stocks():
+    stocks = Stock.getStocks("all")
+    return jsonify(Response("OK", stocks).__dict__)

@@ -16,9 +16,16 @@ class Stock:
             for stock in data:
                 s = Stock(stock['securitySymbol'], stock['lastTradedPrice'], str(stock['percChangeClose']) + '%', stock['priceAsOf']) 
                 stocks.append(s.serialize())
-
         return stocks        
-
+    def getStock(key):
+        stocks = []
+        data = redis_store.get('stocks:'+ key)
+        if data is not None:
+            stock = json.loads(data)
+            stock = Stock(stock['securitySymbol'], stock['lastTradedPrice'], str(stock['percChangeClose']) + '%', stock['priceAsOf']) 
+            stocks.append(stock.serialize())
+            print(json.dumps(stocks))
+        return stocks
 
     def serialize(self):
         return {

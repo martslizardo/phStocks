@@ -24,7 +24,6 @@ class Stock:
             stock = json.loads(data)
             stock = Stock(stock['securitySymbol'], stock['lastTradedPrice'], str(stock['percChangeClose']) + '%', stock['priceAsOf']) 
             stocks.append(stock.serialize())
-            print(json.dumps(stocks))
         return stocks
 
     def serialize(self):

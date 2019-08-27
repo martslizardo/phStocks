@@ -1,6 +1,6 @@
 from . import app
 from .stock import Stock
-from .response import Response
+from .stocksResponse import Response
 from flask import jsonify
 
 

@@ -8,6 +8,6 @@ redis_store = FlaskRedis(app)
 
 from .stocksRequest import retrieve_stocks
 
-ticker.retrieve_stocks()
+stocksRequest.retrieve_stocks()
 
 from . import router

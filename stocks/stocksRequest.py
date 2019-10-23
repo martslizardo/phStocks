@@ -38,7 +38,6 @@ def retrieve_stocks():
                 redis_store.set('stocks:' + stock['securitySymbol'], json.dumps(stock))
 
         stocks = json.dumps(stocks[1:])
-        print(json.dumps(stocks))
         redis_store.set('stocks:all', stocks)
     except requests.exceptions.Timeout as err:
          print(err)    

@@ -36,8 +36,7 @@ def retrieve_stocks():
             for stock in stocks:
                 stock['priceAsOf'] = price_as_of
                 redis_store.set('stocks:' + stock['securitySymbol'], json.dumps(stock))
-
-        stocks = json.dumps(stocks[1:])
-        redis_store.set('stocks:all', stocks)
+            stocks = json.dumps(stocks[1:])
+            redis_store.set('stocks:all', stocks)
     except requests.exceptions.Timeout as err:
          print(err)    

@@ -14,3 +14,20 @@ def get_stock(securitySymbol):
     stock = []
     stock = Stock.getStock(securitySymbol)
     return jsonify(Response(stock).__dict__)
+
+@app.route('/stocks/winners')    
+def winners():
+    stock = Stock.getStocks("top_gainers")
+    return jsonify(Response(stock).__dict__)    
+
+
+@app.route('/stocks/losers')    
+def losers():
+    stock = Stock.getStocks("top_losers")
+    return jsonify(Response(stock).__dict__)   \
+
+
+@app.route('/stocks/active')    
+def active():
+    stock = Stock.getStocks("most_active")
+    return jsonify(Response(stock).__dict__)   

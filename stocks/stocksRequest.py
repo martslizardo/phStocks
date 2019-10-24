@@ -6,6 +6,7 @@ import requests
 from . import redis_store
 import datetime
 import json
+import decimal
 
 
 HOST = 'http://www.pse.com.ph/stockMarket/home.html'
@@ -38,5 +39,20 @@ def retrieve_stocks():
                 redis_store.set('stocks:' + stock['securitySymbol'], json.dumps(stock))
             stocks = json.dumps(stocks[1:])
             redis_store.set('stocks:all', stocks)
+            winners = get_winners_or_losers(stocks,True)
+            redis_store.set('stocks:top_gainers',json.dumps(winners))
+            losers = get_winners_or_losers(stocks,False)
+            redis_store.set('stocks:top_losers',json.dumps(losers))
+            r = requests.get(HOST + '?method=getTopSecurity&limit=10&ajax=true', headers=HEADERS)
+            active = (r.json()['records'])
+            for stock in active:
+                stock['priceAsOf'] = price_as_of
+            redis_store.set('stocks:most_active', json.dumps(active).replace('lastTradePrice', 'lastTradedPrice'))
     except requests.exceptions.Timeout as err:
          print(err)    
+
+
+def get_winners_or_losers(stocks_data,flag):
+    stocks = json.loads(stocks_data)
+    sorted_data = sorted(stocks[1:],key=lambda x:decimal.Decimal(x['percChangeClose']),reverse=flag)
+    return sorted_data[:10]

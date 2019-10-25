@@ -51,7 +51,7 @@ def retrieve_stocks():
     except requests.exceptions.Timeout as err:
          print(err)    
 
-
+#Sorting for top gainers and top losers
 def get_winners_or_losers(stocks_data,flag):
     stocks = json.loads(stocks_data)
     sorted_data = sorted(stocks[1:],key=lambda x:decimal.Decimal(x['percChangeClose']),reverse=flag)
